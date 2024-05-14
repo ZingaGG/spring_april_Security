@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -40,9 +41,7 @@ public class SecurityCFG {
                         .requestMatchers("/private-data").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .formLogin(login -> login
-                        .defaultSuccessUrl("/home")
-                        .permitAll())
+                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
